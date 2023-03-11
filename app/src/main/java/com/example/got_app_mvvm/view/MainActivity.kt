@@ -1,5 +1,6 @@
 package com.example.got_app_mvvm.view
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -21,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemViewModel: ItemViewModel
     private lateinit var searchView: SearchView
-    private lateinit var searchButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +72,7 @@ class MainActivity : AppCompatActivity() {
             val intent =  Intent(this, CharacterInfoActivity::class.java)
             intent.putExtra("character", it)
             startActivity(intent)
+            overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left);
         }
     }
 
@@ -87,11 +88,8 @@ class MainActivity : AppCompatActivity() {
         searchView.clearFocus()
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                searchButton = binding.searchButton
-                adapter.filter(query)
-                return true
+                return false
             }
-
             override fun onQueryTextChange(newText: String?): Boolean {
                 adapter.filter(newText)
                 return true
@@ -106,7 +104,7 @@ class MainActivity : AppCompatActivity() {
     private fun instantiateViewModel() {
         itemViewModel = ViewModelProvider(this)[ItemViewModel::class.java]
         itemViewModel.getItems().observe(this) { items ->
-            adapter.setData(items as ArrayList<DataItem>?)
+            adapter.setMainData(items as ArrayList<DataItem>?)
         }
     }
 

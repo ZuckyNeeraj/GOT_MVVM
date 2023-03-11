@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.got_app_mvvm.R
 import com.example.got_app_mvvm.databinding.ActivityCharacterInfoBinding
@@ -36,9 +37,13 @@ class CharacterInfoActivity : AppCompatActivity() {
             binding.lastNameTextViewCharacterInfo.text = it.lastName
             Glide.with(this)
                 .load(character.imageUrl)
-                .placeholder(R.drawable.ic_launcher_background) // optional placeholder image
+                .override(400, 400)
+                .placeholder(R.drawable.loading) //placeholder image
                 .circleCrop()
                 .into(binding.imageViewCharacterInfo)
+            binding.familyTextViewCharacterInfo.text = it.family
+            binding.titleTextViewCharacterInfo.text= it.title
+            binding.fullNameTextViewCharacterInfo.text = it.fullName
         }
     }
 
