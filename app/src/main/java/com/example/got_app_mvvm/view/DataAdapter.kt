@@ -7,18 +7,16 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Toast
-import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.got_app_mvvm.R
 import com.example.got_app_mvvm.databinding.ItemDisplayBinding
 import com.example.got_app_mvvm.model.DataItem
-import jp.wasabeef.glide.transformations.ColorFilterTransformation
 import java.util.*
 import kotlin.collections.ArrayList
 
-class DataAdapter(private val context: Context, private val searchView: androidx.appcompat.widget.SearchView) : RecyclerView.Adapter<DataAdapter.MyViewHolder>() {
+class DataAdapter(private val context: Context, private val searchView: SearchView) : RecyclerView.Adapter<DataAdapter.MyViewHolder>() {
 
     //data that we are receiving
     private var characters: ArrayList<DataItem>? = null
@@ -89,7 +87,7 @@ class DataAdapter(private val context: Context, private val searchView: androidx
             setData(characters)
         }else{
             for (character in characters!!){
-                if(query?.lowercase(Locale.ROOT)?.let { character.firstName?.lowercase(Locale.ROOT)?.contains(it) } == true){
+                if(query.lowercase(Locale.ROOT).let { character.firstName?.lowercase(Locale.ROOT)?.contains(it) } == true){
                     filteredCharacters!!.add(character)
                 }
             }
