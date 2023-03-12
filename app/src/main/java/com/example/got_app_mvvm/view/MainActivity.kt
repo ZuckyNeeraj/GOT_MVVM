@@ -58,9 +58,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.show()
     }
 
-
-
-
+    
 
     /**
      * Method to perform on clicking any items of recyclerview.
