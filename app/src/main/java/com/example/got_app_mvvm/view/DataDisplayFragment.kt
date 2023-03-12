@@ -2,10 +2,10 @@ package com.example.got_app_mvvm.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.*
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +21,7 @@ class DataDisplayFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var itemViewModel: ItemViewModel
     private lateinit var searchView: SearchView
+    private lateinit var actionBar: ActionBar
 
     private var _binding: FragmentDataDisplayBinding? = null
     private val binding get() = _binding!!
@@ -33,6 +34,17 @@ class DataDisplayFragment : Fragment() {
         _binding = FragmentDataDisplayBinding.inflate(inflater, container, false)
         setupRecyclerView()
         return binding.root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.clear() // remove all items from the menu
+    }
+    override fun onResume() {
+        super.onResume()
+        actionBar = (requireActivity() as AppCompatActivity).supportActionBar!! // Get action bar
+        setHasOptionsMenu(true) // Enable options menu
+        actionBar.setDisplayHomeAsUpEnabled(false) // Enable back button
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,10 +63,14 @@ class DataDisplayFragment : Fragment() {
      */
     private fun onItemClick() {
         adapter.onItemClick = { character ->
-            val intent = Intent(requireActivity(), CharacterInfoActivity::class.java)
-            intent.putExtra("character", character)
-            startActivity(intent)
-            requireActivity().overridePendingTransition(R.transition.slide_in_right, R.transition.slide_out_left)
+            val bundle = Bundle()
+            bundle.putSerializable("character", character)
+            val fragment = CharacterInfoFragment()
+            fragment.arguments = bundle
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.frameFl, fragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
     }
 
